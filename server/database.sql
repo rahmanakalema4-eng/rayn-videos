@@ -1,0 +1,36 @@
+-- Create Users Table
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  is_vip BOOLEAN DEFAULT FALSE,
+  is_admin BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE users
+  ADD COLUMN IF NOT EXISTS is_admin BOOLEAN NOT NULL DEFAULT FALSE;
+
+-- Create Movies Table
+CREATE TABLE IF NOT EXISTS movies (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  mood VARCHAR(50),
+  duration VARCHAR(50),
+  release_year INT,
+  rating DECIMAL(3,1),
+  video_url TEXT NOT NULL,
+  thumbnail_url TEXT,
+  is_vip BOOLEAN NOT NULL DEFAULT FALSE,
+  r2_key TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Apply these columns to existing installations as well.
+ALTER TABLE movies
+  ADD COLUMN IF NOT EXISTS is_vip BOOLEAN NOT NULL DEFAULT FALSE,
+  ADD COLUMN IF NOT EXISTS r2_key TEXT;
+
+ALTER TABLE movies ALTER COLUMN video_url DROP NOT NULL;
